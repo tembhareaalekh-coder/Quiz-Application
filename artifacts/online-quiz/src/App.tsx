@@ -77,6 +77,36 @@ const questionBank: Record<CategoryKey, Question[]> = {
       answer: 1,
       explanation: 'git commit takes the staged changes and records them in the repository history.',
     },
+    {
+      prompt: 'Which keyword declares a block-scoped variable that can be reassigned in JavaScript?',
+      options: ['const', 'let', 'var', 'static'],
+      answer: 1,
+      explanation: 'let creates a block-scoped variable whose value can be reassigned later.',
+    },
+    {
+      prompt: 'What does HTML primarily describe?',
+      options: ['The structure of web content', 'The color palette of a website', 'The server database', 'The network connection'],
+      answer: 0,
+      explanation: 'HTML provides the semantic structure and content of a web page.',
+    },
+    {
+      prompt: 'Which programming paradigm organizes code around objects containing data and behavior?',
+      options: ['Procedural programming', 'Functional programming', 'Object-oriented programming', 'Logic programming'],
+      answer: 2,
+      explanation: 'Object-oriented programming models software as objects that bundle state and behavior.',
+    },
+    {
+      prompt: 'What is the purpose of a version control system such as Git?',
+      options: ['To compress images', 'To track changes to code', 'To host email accounts', 'To compile hardware drivers'],
+      answer: 1,
+      explanation: 'Version control records changes so developers can collaborate and restore earlier versions.',
+    },
+    {
+      prompt: 'Which of these is a JavaScript primitive value?',
+      options: ['Promise', 'Array', 'Symbol', 'Function'],
+      answer: 2,
+      explanation: 'Symbol is one of JavaScript’s primitive types, alongside string, number, bigint, boolean, undefined, and null.',
+    },
   ],
   fundamentals: [
     {
@@ -109,6 +139,36 @@ const questionBank: Record<CategoryKey, Question[]> = {
       answer: 2,
       explanation: 'A Uniform Resource Locator specifies where a resource lives and how to access it.',
     },
+    {
+      prompt: 'What does RAM provide to a computer?',
+      options: ['Permanent file storage', 'Temporary working memory', 'A physical internet connection', 'Power conversion'],
+      answer: 1,
+      explanation: 'RAM temporarily holds data and instructions that the CPU is actively using.',
+    },
+    {
+      prompt: 'Which storage medium has no moving parts?',
+      options: ['Floppy disk', 'Hard disk drive', 'Solid-state drive', 'Tape drive'],
+      answer: 2,
+      explanation: 'Solid-state drives use flash memory and have no spinning disks or moving read heads.',
+    },
+    {
+      prompt: 'What is the binary representation of the decimal number 2?',
+      options: ['01', '10', '11', '100'],
+      answer: 1,
+      explanation: 'In binary, 2 is written as 10: one two and zero ones.',
+    },
+    {
+      prompt: 'Which protocol is commonly used to securely browse websites?',
+      options: ['HTTP', 'HTTPS', 'FTP', 'SMTP'],
+      answer: 1,
+      explanation: 'HTTPS adds encryption and authentication to HTTP connections.',
+    },
+    {
+      prompt: 'What is a computer network’s IP address used to identify?',
+      options: ['A device or network interface', 'A keyboard layout', 'A file type', 'A screen resolution'],
+      answer: 0,
+      explanation: 'An IP address identifies a device or interface so data can be routed to it.',
+    },
   ],
   knowledge: [
     {
@@ -140,6 +200,36 @@ const questionBank: Record<CategoryKey, Question[]> = {
       options: ['Claude Monet', 'Pablo Picasso', 'Vincent van Gogh', 'Georgia O’Keeffe'],
       answer: 2,
       explanation: 'Vincent van Gogh painted The Starry Night in 1889 while staying at an asylum in Saint-Rémy.',
+    },
+    {
+      prompt: 'How many continents are commonly recognized on Earth?',
+      options: ['Five', 'Six', 'Seven', 'Eight'],
+      answer: 2,
+      explanation: 'The commonly taught model recognizes seven continents.',
+    },
+    {
+      prompt: 'Which planet is known as the Red Planet?',
+      options: ['Venus', 'Mars', 'Jupiter', 'Mercury'],
+      answer: 1,
+      explanation: 'Iron minerals in Mars’s soil give the planet its distinctive reddish appearance.',
+    },
+    {
+      prompt: 'What is the hardest natural substance?',
+      options: ['Quartz', 'Iron', 'Diamond', 'Granite'],
+      answer: 2,
+      explanation: 'Diamond is the hardest naturally occurring material on the Mohs hardness scale.',
+    },
+    {
+      prompt: 'Which language has the most native speakers worldwide?',
+      options: ['English', 'Spanish', 'Mandarin Chinese', 'Hindi'],
+      answer: 2,
+      explanation: 'Mandarin Chinese has the largest number of native speakers.',
+    },
+    {
+      prompt: 'What is the largest organ in the human body?',
+      options: ['The liver', 'The skin', 'The heart', 'The lungs'],
+      answer: 1,
+      explanation: 'The skin is the body’s largest organ and protects the tissues beneath it.',
     },
   ],
 };
@@ -220,7 +310,7 @@ function CategoryPicker({
             <span className="text-[#ef735f]">work.</span>
           </h1>
           <p className="mt-8 max-w-[480px] text-base leading-7 text-[#646d77] sm:text-lg">
-            Five sharp questions. Thirty seconds each. Pick a subject and find out what sticks when the clock is running.
+            Ten sharp questions. Thirty seconds each. Pick a subject and find out what sticks when the clock is running.
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-5 font-mono text-[10px] uppercase tracking-[0.15em] text-[#7b8389]">
             <span className="flex items-center gap-2"><Clock3 size={15} className="text-[#ef735f]" /> 30 sec / question</span>
@@ -258,7 +348,7 @@ function CategoryPicker({
             );
           })}
           <div className="mt-3 flex items-center justify-between px-1 font-mono text-[10px] uppercase tracking-[0.13em] text-[#929990]">
-            <span>All rounds / 5 questions</span>
+            <span>All rounds / 10 questions</span>
             <span>No profile required</span>
           </div>
         </div>
@@ -279,7 +369,9 @@ function QuizView({
   currentIndex,
   timeLeft,
   selectedAnswer,
+  isSubmitted,
   onSelect,
+  onSubmit,
   onNext,
   onBack,
 }: {
@@ -288,7 +380,9 @@ function QuizView({
   currentIndex: number;
   timeLeft: number;
   selectedAnswer: number | null;
+  isSubmitted: boolean;
   onSelect: (index: number) => void;
+  onSubmit: () => void;
   onNext: () => void;
   onBack: () => void;
 }) {
@@ -317,7 +411,7 @@ function QuizView({
 
         <div className="mb-10">
           <div className="mb-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.16em] text-[#7c858c]">
-            <span data-testid="text-question-progress">Question {String(currentIndex + 1).padStart(2, '0')} <span className="text-[#b1b4ae]">/ 05</span></span>
+            <span data-testid="text-question-progress">Question {currentIndex + 1} of {questions.length}</span>
             <span className={isUrgent ? 'font-bold text-[#e26351]' : ''}>keep your signal clear</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-[#dddcd4]" aria-label={`Question ${currentIndex + 1} of ${questions.length}`}>
@@ -343,33 +437,46 @@ function QuizView({
                     key={option}
                     type="button"
                     onClick={() => onSelect(index)}
+                    disabled={selectedAnswer !== null || isSubmitted}
                     data-testid={`button-answer-${index}`}
                     aria-pressed={isSelected}
-                    className={`group flex min-h-[66px] items-center gap-4 rounded-[17px] border px-4 text-left transition-all duration-200 sm:px-5 ${isSelected ? 'border-[#202b3d] bg-[#d9f66c] shadow-[4px_4px_0_#202b3d]' : 'border-[#d6d8d2] bg-[#fbfaf4] hover:-translate-y-0.5 hover:border-[#202b3d] hover:bg-[#fdfcf8]'}`}
+                    className={`group flex min-h-[66px] items-center gap-4 rounded-[17px] border px-4 text-left transition-all duration-200 sm:px-5 ${isSubmitted && index === question.answer ? 'border-[#789b24] bg-[#e5f7a0] shadow-[4px_4px_0_#789b24]' : ''} ${isSubmitted && isSelected && index !== question.answer ? 'border-[#e26351] bg-[#ffc2b5] shadow-[4px_4px_0_#e26351]' : ''} ${!isSubmitted && isSelected ? 'border-[#202b3d] bg-[#d9f66c] shadow-[4px_4px_0_#202b3d]' : ''} ${!isSubmitted && !isSelected ? 'border-[#d6d8d2] bg-[#fbfaf4] hover:-translate-y-0.5 hover:border-[#202b3d] hover:bg-[#fdfcf8]' : ''}`}
                   >
                     <span className={`flex size-8 shrink-0 items-center justify-center rounded-lg font-mono text-xs font-medium transition-colors ${isSelected ? 'bg-[#202b3d] text-[#d9f66c]' : 'bg-[#e8e8df] text-[#667078] group-hover:bg-[#202b3d] group-hover:text-[#fbfaf4]'}`}>
-                      {letter}
+                      {isSubmitted && index === question.answer ? <Check size={15} /> : isSubmitted && isSelected ? <X size={15} /> : letter}
                     </span>
                     <span className="text-sm font-medium leading-5 text-[#303b49] sm:text-base">{option}</span>
-                    {isSelected && <Check size={18} className="ml-auto shrink-0 text-[#202b3d]" />}
+                    {isSubmitted && index === question.answer && <Check size={18} className="ml-auto shrink-0 text-[#67821e]" />}
+                    {isSubmitted && isSelected && index !== question.answer && <X size={18} className="ml-auto shrink-0 text-[#d06452]" />}
                   </button>
                 );
               })}
             </div>
             <div className="mt-6 flex items-center justify-between gap-3">
               <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-[#899098]">
-                {selectedAnswer === null ? 'Select one answer' : 'Answer locked in'}
+                {selectedAnswer === null ? 'Select one answer' : isSubmitted ? (selectedAnswer === question.answer ? 'Correct answer' : 'Not quite — answer reviewed') : 'Answer locked in'}
               </span>
-              <button
-                type="button"
-                onClick={onNext}
-                disabled={selectedAnswer === null}
-                data-testid="button-next-question"
-                className="group flex items-center gap-3 rounded-full bg-[#202b3d] px-5 py-3 text-sm font-bold text-[#fbfaf4] transition-all duration-200 hover:gap-4 hover:bg-[#33445a] disabled:cursor-not-allowed disabled:opacity-35"
-              >
-                {currentIndex === questions.length - 1 ? 'See results' : 'Next question'}
-                <ArrowRight size={17} className="transition-transform group-hover:translate-x-0.5" />
-              </button>
+              {!isSubmitted ? (
+                <button
+                  type="button"
+                  onClick={onSubmit}
+                  disabled={selectedAnswer === null}
+                  data-testid="button-submit-answer"
+                  className="group flex items-center gap-3 rounded-full bg-[#202b3d] px-5 py-3 text-sm font-bold text-[#fbfaf4] transition-all duration-200 hover:gap-4 hover:bg-[#33445a] disabled:cursor-not-allowed disabled:opacity-35"
+                >
+                  Check answer <Check size={17} />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onNext}
+                  data-testid="button-next-question"
+                  className="group flex items-center gap-3 rounded-full bg-[#202b3d] px-5 py-3 text-sm font-bold text-[#fbfaf4] transition-all duration-200 hover:gap-4 hover:bg-[#33445a]"
+                >
+                  {currentIndex === questions.length - 1 ? 'See results' : 'Next question'}
+                  <ArrowRight size={17} className="transition-transform group-hover:translate-x-0.5" />
+                </button>
+              )}
             </div>
           </section>
 
@@ -404,16 +511,27 @@ function ResultView({
   category,
   questions,
   answers,
-  onRestart,
+  onTryAgain,
+  onBackHome,
 }: {
   category: Category;
   questions: Question[];
   answers: (number | null)[];
-  onRestart: () => void;
+  onTryAgain: () => void;
+  onBackHome: () => void;
 }) {
   const score = questions.reduce((total, question, index) => total + (answers[index] === question.answer ? 1 : 0), 0);
   const percentage = Math.round((score / questions.length) * 100);
-  const message = percentage === 100 ? 'Crystal clear.' : percentage >= 60 ? 'Good signal. Keep going.' : 'The signal is getting stronger.';
+  const wrongCount = questions.length - score;
+  const message = percentage === 100
+    ? 'Crystal clear. You nailed every signal.'
+    : percentage >= 80
+      ? 'Strong signal. Your recall is sharp.'
+      : percentage >= 60
+        ? 'Good signal. Keep building your edge.'
+        : percentage >= 40
+          ? 'You are getting there. A little more practice will sharpen the signal.'
+          : 'Every round is a rep. Keep going and the signal will get stronger.';
   const correctCount = questions.filter((question, index) => answers[index] === question.answer).length;
 
   return (
@@ -424,8 +542,8 @@ function ResultView({
             <span className="font-mono text-[10px] uppercase tracking-[0.17em] text-[#ef735f]">Round complete</span>
             <h1 className="mt-2 text-3xl font-bold tracking-[-0.06em] text-[#202b3d] sm:text-4xl">Here’s your readout.</h1>
           </div>
-          <button type="button" onClick={onRestart} data-testid="button-restart-top" className="hidden items-center gap-2 rounded-full border border-[#cfd3cc] bg-[#fbfaf4] px-4 py-2.5 text-xs font-bold text-[#394554] transition-colors hover:border-[#202b3d] hover:bg-[#202b3d] hover:text-[#fbfaf4] sm:flex">
-            <RotateCcw size={14} /> New round
+           <button type="button" onClick={onBackHome} data-testid="button-back-home-top" className="hidden items-center gap-2 rounded-full border border-[#cfd3cc] bg-[#fbfaf4] px-4 py-2.5 text-xs font-bold text-[#394554] transition-colors hover:border-[#202b3d] hover:bg-[#202b3d] hover:text-[#fbfaf4] sm:flex">
+             <ArrowLeft size={14} /> Back to home
           </button>
         </div>
 
@@ -439,22 +557,37 @@ function ResultView({
                 <span className="mb-1 font-mono text-xs uppercase tracking-[0.15em] text-[#aeb6b5]">/ {questions.length}<br />correct</span>
               </div>
               <p data-testid="text-performance-message" className="mt-8 max-w-[290px] text-2xl font-semibold leading-7 tracking-[-0.05em]">{message}</p>
-              <div className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#33445a] px-3 py-2 font-mono text-[11px] text-[#e6e9df]">
+               <div className="mt-8 flex flex-wrap items-center gap-2 font-mono text-[11px] text-[#e6e9df]">
                 <span data-testid="text-score-percentage">{percentage}% accuracy</span>
                 <span className="size-1 rounded-full bg-[#ef735f]" />
-                <span>{correctCount} of 5</span>
+                 <span>{correctCount} of {questions.length} correct</span>
               </div>
             </div>
           </div>
           <div className="flex flex-col justify-between bg-[#d9f66c] p-7 text-[#202b3d] sm:p-10">
             <div>
               <div className="flex size-11 items-center justify-center rounded-2xl bg-[#202b3d] text-[#d9f66c]"><Target size={22} /></div>
-              <h2 className="mt-8 max-w-[390px] text-[clamp(2rem,4vw,3.8rem)] font-bold leading-[.94] tracking-[-0.08em]">Progress is a practice, not a verdict.</h2>
-              <p className="mt-5 max-w-[370px] text-sm leading-6 text-[#52602f]">Every answer gives you a cleaner signal about what to revisit next. Run it again when you’re ready.</p>
+               <h2 className="mt-8 max-w-[390px] text-[clamp(2rem,4vw,3.8rem)] font-bold leading-[.94] tracking-[-0.08em]">Progress is a practice, not a verdict.</h2>
+               <p className="mt-5 max-w-[370px] text-sm leading-6 text-[#52602f]">Every answer gives you a cleaner signal about what to revisit next. Run it again when you’re ready.</p>
+               <div className="mt-7 grid grid-cols-2 gap-3">
+                 <div className="rounded-2xl bg-[#c4e95d] p-4">
+                   <span className="block font-mono text-[10px] uppercase tracking-[0.12em] text-[#52602f]">Correct</span>
+                   <span data-testid="text-correct-count" className="mt-1 block text-3xl font-bold tracking-[-0.07em]">{correctCount}</span>
+                 </div>
+                 <div className="rounded-2xl bg-[#ffc2b5] p-4">
+                   <span className="block font-mono text-[10px] uppercase tracking-[0.12em] text-[#6c3027]">Wrong</span>
+                   <span data-testid="text-wrong-count" className="mt-1 block text-3xl font-bold tracking-[-0.07em]">{wrongCount}</span>
+                 </div>
+               </div>
             </div>
-            <button type="button" onClick={onRestart} data-testid="button-restart-quiz" className="mt-10 flex w-full items-center justify-center gap-3 rounded-full bg-[#202b3d] px-5 py-3.5 text-sm font-bold text-[#f3f1e9] transition-all hover:gap-4 hover:bg-[#33445a]">
-              <RotateCcw size={16} /> Try another round <ArrowRight size={16} />
-            </button>
+             <div className="mt-10 grid gap-3 sm:grid-cols-2">
+               <button type="button" onClick={onTryAgain} data-testid="button-try-again" className="flex w-full items-center justify-center gap-3 rounded-full bg-[#202b3d] px-5 py-3.5 text-sm font-bold text-[#f3f1e9] transition-all hover:gap-4 hover:bg-[#33445a]">
+                 <RotateCcw size={16} /> Try again
+               </button>
+               <button type="button" onClick={onBackHome} data-testid="button-back-home" className="flex w-full items-center justify-center gap-3 rounded-full border border-[#202b3d]/20 px-5 py-3.5 text-sm font-bold text-[#202b3d] transition-all hover:bg-[#f3f1e9]">
+                 <ArrowLeft size={16} /> Back to home
+               </button>
+             </div>
           </div>
         </section>
 
@@ -505,6 +638,7 @@ function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
 
   const category = useMemo(() => categories.find((item) => item.key === categoryKey) ?? null, [categoryKey]);
@@ -516,6 +650,7 @@ function Home() {
     setCurrentIndex(0);
     setAnswers([]);
     setSelectedAnswer(null);
+    setIsSubmitted(false);
     setTimeLeft(30);
   }, []);
 
@@ -525,21 +660,36 @@ function Home() {
     setCurrentIndex(0);
     setAnswers([]);
     setSelectedAnswer(null);
+    setIsSubmitted(false);
     setTimeLeft(30);
   }, []);
 
-  const advanceQuestion = useCallback(() => {
+  const finishQuestion = useCallback((shouldShowFeedback: boolean) => {
     const nextAnswers = [...answers];
     nextAnswers[currentIndex] = selectedAnswer;
     setAnswers(nextAnswers);
+    if (shouldShowFeedback) {
+      setIsSubmitted(true);
+      return;
+    }
     if (currentIndex >= questions.length - 1) {
       setPhase('result');
       return;
     }
     setCurrentIndex((index) => index + 1);
     setSelectedAnswer(null);
+    setIsSubmitted(false);
     setTimeLeft(30);
   }, [answers, currentIndex, questions.length, selectedAnswer]);
+
+  const submitAnswer = useCallback(() => {
+    if (selectedAnswer === null || isSubmitted) return;
+    finishQuestion(true);
+  }, [finishQuestion, isSubmitted, selectedAnswer]);
+
+  const advanceQuestion = useCallback(() => {
+    finishQuestion(false);
+  }, [finishQuestion]);
 
   useEffect(() => {
     if (phase !== 'quiz') return;
@@ -550,12 +700,13 @@ function Home() {
   }, [phase, currentIndex]);
 
   useEffect(() => {
-    if (phase === 'quiz' && timeLeft === 0) {
-      advanceQuestion();
+    if (phase === 'quiz' && timeLeft === 0 && !isSubmitted) {
+      finishQuestion(false);
     }
-  }, [advanceQuestion, phase, timeLeft]);
+  }, [finishQuestion, isSubmitted, phase, timeLeft]);
 
   const handleSelect = (index: number) => {
+    if (selectedAnswer !== null || isSubmitted) return;
     setSelectedAnswer(index);
   };
 
@@ -573,8 +724,8 @@ function Home() {
         </div>
       </header>
       {phase === 'select' && <CategoryPicker onStart={startQuiz} />}
-      {phase === 'quiz' && category && <QuizView category={category} questions={questions} currentIndex={currentIndex} timeLeft={timeLeft} selectedAnswer={selectedAnswer} onSelect={handleSelect} onNext={advanceQuestion} onBack={goToCategories} />}
-      {phase === 'result' && category && <ResultView category={category} questions={questions} answers={answers} onRestart={goToCategories} />}
+      {phase === 'quiz' && category && <QuizView category={category} questions={questions} currentIndex={currentIndex} timeLeft={timeLeft} selectedAnswer={selectedAnswer} isSubmitted={isSubmitted} onSelect={handleSelect} onSubmit={submitAnswer} onNext={advanceQuestion} onBack={goToCategories} />}
+      {phase === 'result' && category && <ResultView category={category} questions={questions} answers={answers} onTryAgain={() => startQuiz(category.key)} onBackHome={goToCategories} />}
     </div>
   );
 }
