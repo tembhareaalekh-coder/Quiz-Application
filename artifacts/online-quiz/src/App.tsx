@@ -692,12 +692,12 @@ function Home() {
   }, [finishQuestion]);
 
   useEffect(() => {
-    if (phase !== 'quiz') return;
+    if (phase !== 'quiz' || isSubmitted) return;
     const timer = window.setInterval(() => {
       setTimeLeft((value) => Math.max(value - 1, 0));
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [phase, currentIndex]);
+  }, [currentIndex, isSubmitted, phase]);
 
   useEffect(() => {
     if (phase === 'quiz' && timeLeft === 0 && !isSubmitted) {
