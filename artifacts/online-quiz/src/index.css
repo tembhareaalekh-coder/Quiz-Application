@@ -489,6 +489,36 @@ a:focus-visible {
   animation: quiz-pop 420ms cubic-bezier(.22, 1, .36, 1) both;
 }
 
+.quiz-category-card {
+  animation: quiz-card-rise 620ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.quiz-category-card:nth-child(1) { animation-delay: 120ms; }
+.quiz-category-card:nth-child(2) { animation-delay: 200ms; }
+.quiz-category-card:nth-child(3) { animation-delay: 280ms; }
+
+.quiz-question-transition {
+  animation: quiz-question-slide 420ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.quiz-result-reveal {
+  animation: quiz-result-reveal 700ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.quiz-answer-option {
+  animation: quiz-answer-settle 360ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.quiz-answer-option:nth-child(1) { animation-delay: 80ms; }
+.quiz-answer-option:nth-child(2) { animation-delay: 130ms; }
+.quiz-answer-option:nth-child(3) { animation-delay: 180ms; }
+.quiz-answer-option:nth-child(4) { animation-delay: 230ms; }
+
+.answer-correct,
+.answer-incorrect {
+  animation: quiz-feedback-pop 420ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
 @keyframes quiz-entrance {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
@@ -497,6 +527,32 @@ a:focus-visible {
 @keyframes quiz-pop {
   0% { opacity: 0; transform: scale(.97) translateY(8px); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes quiz-card-rise {
+  from { opacity: 0; transform: translateX(18px) scale(.985); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes quiz-question-slide {
+  from { opacity: 0; transform: translateX(18px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes quiz-result-reveal {
+  from { opacity: 0; transform: translateY(22px) scale(.985); clip-path: inset(0 0 8% 0 round 28px); }
+  to { opacity: 1; transform: translateY(0) scale(1); clip-path: inset(0 0 0 0 round 28px); }
+}
+
+@keyframes quiz-answer-settle {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes quiz-feedback-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.018); }
+  100% { transform: scale(1); }
 }
 
 @keyframes timer-pulse {
@@ -511,6 +567,12 @@ a:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .quiz-entrance,
   .quiz-pop,
+  .quiz-category-card,
+  .quiz-question-transition,
+  .quiz-result-reveal,
+  .quiz-answer-option,
+  .answer-correct,
+  .answer-incorrect,
   .timer-urgent {
     animation: none;
   }

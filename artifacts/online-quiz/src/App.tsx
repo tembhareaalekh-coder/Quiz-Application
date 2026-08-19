@@ -330,7 +330,7 @@ function CategoryPicker({
                 type="button"
                 onClick={() => onStart(category.key)}
                 data-testid={`button-start-${category.key}`}
-                className="group relative flex w-full items-center gap-4 overflow-hidden rounded-[22px] border border-[#d5d8d2] bg-[#fbfaf4] p-4 text-left shadow-[0_2px_0_rgba(32,43,61,.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#202b3d] hover:shadow-[6px_7px_0_#202b3d] focus-visible:-translate-y-1 sm:gap-5 sm:p-5"
+                className="quiz-category-card group relative flex w-full items-center gap-4 overflow-hidden rounded-[22px] border border-[#d5d8d2] bg-[#fbfaf4] p-4 text-left shadow-[0_2px_0_rgba(32,43,61,.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#202b3d] hover:shadow-[6px_7px_0_#202b3d] focus-visible:-translate-y-1 sm:gap-5 sm:p-5"
               >
                 <span className={`flex size-14 shrink-0 items-center justify-center rounded-[17px] ${category.accent} transition-transform duration-300 group-hover:rotate-[-6deg] group-hover:scale-105`}>
                   <Icon size={25} strokeWidth={1.9} />
@@ -420,7 +420,7 @@ function QuizView({
         </div>
 
         <div className="grid gap-8 lg:grid-cols-[1fr_330px] lg:gap-16">
-          <section className="quiz-pop" aria-labelledby="question-prompt">
+          <section key={currentIndex} className="quiz-pop quiz-question-transition" aria-labelledby="question-prompt">
             <div className="mb-8">
               <span className="mb-4 block font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-[#ef735f]">Think it through</span>
               <h1 id="question-prompt" data-testid="text-question-prompt" className="max-w-[720px] text-[clamp(2rem,4.5vw,4.25rem)] font-bold leading-[.98] tracking-[-0.075em] text-[#202b3d]">
@@ -428,7 +428,7 @@ function QuizView({
               </h1>
             </div>
 
-            <div className="grid gap-3">
+              <div className="grid gap-3">
               {question.options.map((option, index) => {
                 const isSelected = selectedAnswer === index;
                 const letter = String.fromCharCode(65 + index);
@@ -440,7 +440,7 @@ function QuizView({
                     disabled={selectedAnswer !== null || isSubmitted}
                     data-testid={`button-answer-${index}`}
                     aria-pressed={isSelected}
-                    className={`group flex min-h-[66px] items-center gap-4 rounded-[17px] border px-4 text-left transition-all duration-200 sm:px-5 ${isSubmitted && index === question.answer ? 'border-[#789b24] bg-[#e5f7a0] shadow-[4px_4px_0_#789b24]' : ''} ${isSubmitted && isSelected && index !== question.answer ? 'border-[#e26351] bg-[#ffc2b5] shadow-[4px_4px_0_#e26351]' : ''} ${!isSubmitted && isSelected ? 'border-[#202b3d] bg-[#d9f66c] shadow-[4px_4px_0_#202b3d]' : ''} ${!isSubmitted && !isSelected ? 'border-[#d6d8d2] bg-[#fbfaf4] hover:-translate-y-0.5 hover:border-[#202b3d] hover:bg-[#fdfcf8]' : ''}`}
+                    className={`quiz-answer-option group flex min-h-[66px] items-center gap-4 rounded-[17px] border px-4 text-left transition-all duration-200 sm:px-5 ${isSubmitted && index === question.answer ? 'answer-correct border-[#789b24] bg-[#e5f7a0] shadow-[4px_4px_0_#789b24]' : ''} ${isSubmitted && isSelected && index !== question.answer ? 'answer-incorrect border-[#e26351] bg-[#ffc2b5] shadow-[4px_4px_0_#e26351]' : ''} ${!isSubmitted && isSelected ? 'border-[#202b3d] bg-[#d9f66c] shadow-[4px_4px_0_#202b3d]' : ''} ${!isSubmitted && !isSelected ? 'border-[#d6d8d2] bg-[#fbfaf4] hover:-translate-y-0.5 hover:border-[#202b3d] hover:bg-[#fdfcf8]' : ''}`}
                   >
                     <span className={`flex size-8 shrink-0 items-center justify-center rounded-lg font-mono text-xs font-medium transition-colors ${isSelected ? 'bg-[#202b3d] text-[#d9f66c]' : 'bg-[#e8e8df] text-[#667078] group-hover:bg-[#202b3d] group-hover:text-[#fbfaf4]'}`}>
                       {isSubmitted && index === question.answer ? <Check size={15} /> : isSubmitted && isSelected ? <X size={15} /> : letter}
@@ -547,7 +547,7 @@ function ResultView({
           </button>
         </div>
 
-        <section className="grid overflow-hidden rounded-[28px] bg-[#202b3d] text-[#f3f1e9] shadow-[8px_9px_0_#d9f66c] sm:grid-cols-[.95fr_1.05fr] quiz-entrance quiz-entrance-delay-1">
+        <section className="quiz-result-reveal grid overflow-hidden rounded-[28px] bg-[#202b3d] text-[#f3f1e9] shadow-[8px_9px_0_#d9f66c] sm:grid-cols-[.95fr_1.05fr]">
           <div className="relative overflow-hidden p-7 sm:p-10">
             <div className="absolute -right-16 -top-20 size-56 rounded-full border-[36px] border-[#33445a] opacity-60" />
             <div className="relative">
