@@ -3,6 +3,9 @@
 A modern and responsive online quiz application designed to test knowledge through interactive multiple-choice quizzes.
 
 ## Features
+## Live Demo
+
+🚀 [Try the Quiz Application](https://quiz-application--aalekhtembhare.replit.app/)
 
 - Multiple quiz categories
 - Programming, Computer Fundamentals and General Knowledge
